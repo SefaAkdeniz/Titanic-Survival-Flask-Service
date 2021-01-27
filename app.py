@@ -1,8 +1,6 @@
 import pandas as pd
-from flask import Flask,jsonify
+from flask import Flask,jsonify,request
 import joblib
-import pickle
-
 
 scaler = joblib.load('scaler.pkl')
 model = joblib.load('model.pkl')
@@ -13,8 +11,17 @@ app = Flask(__name__)
 def hello():
     return "Hello World!"
 
-@app.route('/<int:Pclass>/<int:Sex>/<int:Age>/<int:SibSp>/<int:Parch>/<float:Fare>/<string:Embarked>')
-def index(Pclass,Sex,Age,SibSp,Parch,Fare,Embarked):
+@app.route('/predict', methods=['POST'])
+def index():
+    
+    body = request.json
+    Pclass = body["Pclass"]
+    Sex = body["Sex"]
+    Age = body["Age"]
+    SibSp = body["SibSp"]
+    Parch = body["Parch"]
+    Fare = body["Fare"]
+    Embarked = body["Embarked"]
     
     try:     
         if Embarked == "Q":
