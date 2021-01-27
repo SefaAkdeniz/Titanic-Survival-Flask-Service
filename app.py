@@ -32,12 +32,13 @@ def index():
             array=pd.DataFrame([[Pclass,Sex,Age,SibSp,Parch,Fare,0,0,1]])
             
         array = scaler.transform(array)    
-        print(model.predict(array)[0])    
-        print(type(model.predict(array)[0]))          
-        return jsonify(result=str(model.predict(array)[0]))
+        if model.predict(array)[0]==1:  
+            return jsonify(result=1,message="Girilen bilgilere sahip kişi muhtemelen yaşamını yiterecektir.")
+        else:
+            return jsonify(result=1,message="Girilen bilgilere sahip kişi muhtemelen yaşamını devam ettirecektir.")
     
     except ValueError:
-        return jsonify(result=str(ValueError))
+        return jsonify(result=0,message=str(ValueError))
            
 if __name__ == '__main__':
     app.run(port=5000,debug=True)
